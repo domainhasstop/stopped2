@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT. Sago Prima Pratama JResources - Aplikasi Karir</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a4a60; /* Dark Teal/Navy - Corporate */
+            --secondary-color: #fca311; /* Gold/Orange - Resource/Mining look */
+            --bg-color: #f7f7f7;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+        }
+        .header-bg {
+            background-color: var(--primary-color);
+        }
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #e59400; /* Darker gold */
+            box-shadow: 0 4px 15px rgba(252, 163, 17, 0.4);
+        }
+        .input-style {
+            border-color: #ccc;
+            padding: 12px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-style:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(252, 163, 17, 0.3);
+        }
+        .card {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+        .spinner {
+            border-top-color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            border-bottom-color: var(--secondary-color);
+            border-right-color: var(--secondary-color);
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center">
+
+    <!-- Header Section -->
+    <header class="header-bg w-full py-8 mb-8 shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-2 tracking-wider">
+                PT. Sago Prima Pratama JResources
+            </h1>
+            <p class="text-lg text-gray-200 font-light">
+                Formulir Aplikasi Karir & Wawancara Awal
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content / Form Container -->
+    <main class="w-full max-w-4xl px-4 pb-12">
+        <div id="form-card" class="card bg-white p-6 sm:p-10 rounded-xl">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-3" style="border-color: var(--secondary-color);">
+                Data Pelamar & Pertanyaan Wawancara
+            </h2>
+
+            <!-- Feedback Message Area -->
+            <div id="feedback-message" class="hidden p-4 rounded-lg text-sm mb-6 font-medium" role="alert"></div>
+
+            <form id="recruitment-form" onsubmit="event.preventDefault(); handleSubmit();">
+                
+                <!-- Section 1: Data Diri (Self Data) -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 text-gray-700">1. Informasi Pribadi</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-600 mb-1">Nama Lengkap <span class="text-red-500">*</span></label>
+                            <input type="text" id="name" name="name" required class="input-style w-full rounded-lg border focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="position" class="block text-sm font-medium text-gray-600 mb-1">Posisi yang Dilamar <span class="text-red-500">*</span></label>
+                            <input type="text" id="position" name="position" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Contoh: Geologis Senior / Staf Administrasi">
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-600 mb-1">Email Aktif <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" name="email" required class="input-style w-full rounded-lg border focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-600 mb-1">Nomor Telepon (WhatsApp) <span class="text-red-500">*</span></label>
+                            <input type="tel" id="phone" name="phone" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Contoh: 0812xxxxxx">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Pertanyaan Wawancara Awal (Initial Interview Questions) -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 text-gray-700">2. Pertanyaan Wawancara</h3>
+
+                    <!-- Q1: Motivation & Company Fit (TIDAK BERUBAH) -->
+                    <div class="mb-4">
+                        <label for="q_motivation" class="block text-sm font-medium text-gray-600 mb-1">
+                            Q1: Mengapa Anda tertarik bekerja di PT. Sago Prima Pratama JResources dan di posisi ini? <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="q_motivation" name="q_motivation" rows="4" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Jelaskan motivasi Anda dan pemahaman Anda tentang perusahaan (sebagai perusahaan sumber daya/pertambangan)."></textarea>
+                    </div>
+
+                    <!-- Q2: Relevant Experience (DISEMPURNAKAN) -->
+                    <div class="mb-4">
+                        <label for="q_experience" class="block text-sm font-medium text-gray-600 mb-1">
+                            Q2: Jelaskan secara singkat tanggung jawab utama Anda di pekerjaan terakhir yang paling relevan. <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="q_experience" name="q_experience" rows="5" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Sebutkan 2-3 tanggung jawab inti dan satu hal penting yang Anda pelajari dari pengalaman tersebut."></textarea>
+                    </div>
+
+                    <!-- Q3: Problem Solving/Resilience (DISEMPURNAKAN) -->
+                    <div class="mb-4">
+                        <label for="q_challenge" class="block text-sm font-medium text-gray-600 mb-1">
+                            Q3: Ceritakan tentang sebuah proyek atau situasi yang menantang namun berhasil Anda selesaikan. Apa langkah utama Anda? <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="q_challenge" name="q_challenge" rows="5" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Fokuskan pada solusi yang Anda terapkan dan bagaimana Anda berhasil menyelesaikannya."></textarea>
+                    </div>
+
+                    <!-- Q4: Strengths/Contribution (TIDAK BERUBAH) -->
+                    <div class="mb-4">
+                        <label for="q_fit" class="block text-sm font-medium text-gray-600 mb-1">
+                            Q4: Apa keahlian/kekuatan utama yang Anda yakini akan membawa kontribusi terbesar bagi tim kami dan selaras dengan nilai-nilai JResources? <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="q_fit" name="q_fit" rows="4" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Contoh: Keselamatan Kerja, Analisis Data, Kepemimpinan, dsb."></textarea>
+                    </div>
+
+                    <!-- Q5: Safety & Ethics (DISEMPURNAKAN) -->
+                    <div class="mb-4">
+                        <label for="q_safety_ethics" class="block text-sm font-medium text-gray-600 mb-1">
+                            Q5: Bagi Anda, mengapa Keselamatan dan Kesehatan Kerja (K3) itu penting, dan apa satu aturan K3 yang selalu Anda prioritaskan? <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="q_safety_ethics" name="q_safety_ethics" rows="4" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Jelaskan secara ringkas pandangan Anda tentang keselamatan kerja."></textarea>
+                    </div>
+
+                    <!-- Q6: Teamwork & Collaboration/Conflict (DISEMPURNAKAN) -->
+                    <div class="mb-4">
+                        <label for="q_team_conflict" class="block text-sm font-medium text-gray-600 mb-1">
+                            Q6: Bagaimana Anda memastikan komunikasi yang baik dan hasil kerja yang efektif saat berkolaborasi dengan rekan kerja yang memiliki gaya kerja berbeda? <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="q_team_conflict" name="q_team_conflict" rows="5" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Deskripsikan cara Anda menyesuaikan diri dan memastikan semua orang berada di halaman yang sama."></textarea>
+                    </div>
+
+                    <!-- Q7: Prioritization & Workload Management (DISEMPURNAKAN) -->
+                    <div class="mb-4">
+                        <label for="q_prioritization" class="block text-sm font-medium text-gray-600 mb-1">
+                            Q7: Jelaskan bagaimana Anda merencanakan dan mengatur tugas-tugas Anda di hari kerja untuk memastikan semua selesai tepat waktu. <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="q_prioritization" name="q_prioritization" rows="4" required class="input-style w-full rounded-lg border focus:outline-none" placeholder="Sebutkan metode sederhana yang Anda gunakan untuk mengatur prioritas (misalnya: daftar, skala waktu, dll.)."></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 3: Pengiriman Dokumen (Document Submission) -->
+                <div class="mb-8 p-6 bg-gray-50 border border-yellow-300 rounded-xl">
+                    <h3 class="text-xl font-bold mb-3 text-gray-700 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.398 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        3. Pengiriman Dokumen Lampiran (Wajib)
+                    </h3>
+                    <p class="text-base text-gray-700 mb-3">
+                        Setelah mengirimkan formulir ini, Anda **wajib** segera mengirimkan dokumen-dokumen pendukung Anda sebagai lampiran (attachment) ke alamat email rekrutmen kami:
+                    </p>
+                    <div class="p-3 bg-yellow-100 rounded-lg text-lg font-semibold text-yellow-800 break-all text-center">
+                        tarakanbranch.id.atlascopco@gmail.com
+                    </div>
+                    <p class="mt-3 text-sm text-gray-600">
+                        Pastikan Anda melampirkan dokumen berikut (dalam format PDF/JPG yang jelas):
+                        <ul class="list-disc list-inside mt-2 ml-4 space-y-1">
+                            <li>Surat Lamaran Kerja Terbaru</li>
+                            <li>Scan KTP (Kartu Tanda Penduduk)</li>
+                            <li>Scan Ijazah Terakhir dan Transkrip Nilai</li>
+                            <li>Dokumen Pendukung Lainnya (Sertifikat Pelatihan, Surat Pengalaman Kerja, dll.)</li>
+                        </ul>
+                    </p>
+                </div>
+                <!-- END NEW SECTION 3 -->
+
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-button" class="btn-primary w-full py-3 rounded-xl font-bold text-lg flex items-center justify-center">
+                    <span id="submit-text">Kirim Aplikasi</span>
+                    <div id="loading-spinner" class="hidden w-5 h-5 border-2 border-dashed rounded-full spinner ml-3"></div>
+                </button>
+            </form>
+            
+            <!-- Footer Sederhana (Telah Ditambahkan Pemberitahuan Kontak) -->
+            <div class="mt-8 pt-4 border-t text-sm text-gray-500">
+                <p class="text-sm text-gray-600 mb-2 font-medium">
+                    Pemberitahuan: Aplikasi yang diterima akan dihubungi oleh tim Personalia PT. Sago Prima Pratama JResources melalui email resmi perusahaan atau pesan WhatsApp dari nomor kontak resmi kami.
+                </p>
+                <p>Formulir ini didukung oleh layanan aplikasi online untuk perekrutan.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Firebase Configuration and Script -->
+    <script type="module">
+        // Hanya mengimpor fungsi yang diperlukan
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Variabel global yang disediakan oleh lingkungan Canvas untuk kebutuhan path dan token.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        
+        // Configuration Firebase (Hardcoded)
+        const firebaseConfig = {
+            apiKey: "AIzaSyA_FynN_E6zxOEHo3k2t-olypo2Tu_D-zQ",
+            authDomain: "webchatapp90.firebaseapp.com",
+            databaseURL: "https://webchatapp90-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "webchatapp90",
+            storageBucket: "webchatapp90.firebasestorage.app",
+            messagingSenderId: "199231928341",
+            appId: "1:199231928341:web:cb1d7e99d65c3e2d06361c"
+        };
+        
+        let db;
+        let auth;
+        let currentUserId = 'anonymous'; // Tetap diperlukan untuk path Firestore
+
+        const feedbackMessage = document.getElementById('feedback-message');
+        const submitButton = document.getElementById('submit-button');
+        const submitText = document.getElementById('submit-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        /**
+         * Menginisialisasi Firebase app, otentikasi, dan Firestore (berjalan di background).
+         */
+        async function initializeFirebase() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                setLogLevel('Error'); // Mengurangi logging ke konsol hanya untuk error
+
+                // 1. Otentikasi pengguna secara anonim
+                await signInAnonymously(auth);
+
+                // 2. Listener status otentikasi
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                    } else {
+                        // Fallback jika anonim gagal
+                        currentUserId = crypto.randomUUID();
+                    }
+                    console.log("Firebase initialized silently. User ID (Background):", currentUserId);
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+                setFeedback(`Gagal inisialisasi layanan latar belakang. Cek konsol.`, 'error');
+            }
+        }
+
+        /**
+         * Menetapkan dan menampilkan pesan umpan balik kepada pengguna.
+         */
+        function setFeedback(message, type) {
+            feedbackMessage.textContent = message;
+            feedbackMessage.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-blue-100', 'text-blue-800');
+            
+            if (type === 'success') {
+                feedbackMessage.classList.add('bg-green-100', 'text-green-800');
+            } else if (type === 'error') {
+                feedbackMessage.classList.add('bg-red-100', 'text-red-800');
+            } else {
+                feedbackMessage.classList.add('bg-blue-100', 'text-blue-800');
+            }
+
+            setTimeout(() => {
+                feedbackMessage.classList.add('hidden');
+            }, 8000);
+        }
+        
+        /**
+         * Menangani pengiriman formulir, menyimpan data ke Firestore.
+         */
+        window.handleSubmit = async function() {
+            if (!db || !currentUserId) {
+                setFeedback('Sistem belum siap. Mohon tunggu sebentar atau muat ulang halaman.', 'error');
+                return;
+            }
+
+            // Validasi sederhana (kolom wajib)
+            const requiredFields = ['name', 'position', 'email', 'phone', 'q_motivation', 'q_experience', 'q_challenge', 'q_fit', 'q_safety_ethics', 'q_team_conflict', 'q_prioritization'];
+            let isValid = true;
+            const data = {};
+
+            requiredFields.forEach(id => {
+                const input = document.getElementById(id);
+                data[id] = input.value.trim();
+                if (!data[id]) {
+                    isValid = false;
+                    input.style.borderColor = 'red';
+                } else {
+                    input.style.borderColor = '#ccc';
+                }
+            });
+
+            if (!isValid) {
+                setFeedback('Gagal mengirim: Mohon isi semua kolom yang bertanda (*).', 'error');
+                return;
+            }
+
+            // Mulai status loading
+            submitButton.disabled = true;
+            submitText.textContent = 'Mengirim...';
+            loadingSpinner.classList.remove('hidden');
+
+            // Mengumpulkan semua data aplikasi
+            const applicationData = {
+                applicantId: currentUserId,
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                position: data.position,
+                q_motivation: data.q_motivation,
+                q_experience: data.q_experience,
+                q_challenge: data.q_challenge,
+                q_fit: data.q_fit,
+                q_safety_ethics: data.q_safety_ethics,
+                q_team_conflict: data.q_team_conflict,
+                q_prioritization: data.q_prioritization,
+                timestamp: new Date().toISOString()
+            };
+
+            // Jalur Firestore tempat data disimpan (Public)
+            const collectionPath = `artifacts/${appId}/public/data/applications`;
+
+            try {
+                // Menyimpan dokumen ke Firestore
+                const docRef = await addDoc(collection(db, collectionPath), applicationData);
+                
+                // PESAN SUKSES DENGAN PENGINGAT LAMPIRAN
+                setFeedback(`Aplikasi berhasil dikirim! Kami akan segera menghubungi Anda. Jangan lupa kirim dokumen lampiran ke email rekrutmen kami. ID Dokumen: ${docRef.id}`, 'success');
+                // Mengosongkan form
+                document.getElementById('recruitment-form').reset();
+                
+                console.log("Document successfully written with ID:", docRef.id);
+
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                setFeedback(`Gagal menyimpan aplikasi: ${e.message}. Coba lagi.`, 'error');
+            } finally {
+                // Akhiri status loading
+                submitButton.disabled = false;
+                submitText.textContent = 'Kirim Aplikasi';
+                loadingSpinner.classList.add('hidden');
+            }
+        }
+
+        // Inisialisasi Firebase saat skrip dimuat
+        initializeFirebase();
+
+    </script>
+</body>
+</html>
